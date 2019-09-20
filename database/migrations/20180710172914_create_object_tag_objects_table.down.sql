@@ -1,0 +1,1 @@
+DROP TABLE object_tag_objects;

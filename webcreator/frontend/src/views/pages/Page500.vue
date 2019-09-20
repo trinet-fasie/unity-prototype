@@ -1,0 +1,27 @@
+<template>
+  <div class="app flex-row align-items-center">
+    <div class="container">
+      <b-row class="justify-content-center">
+        <b-col md="6">
+          <div class="clearfix">
+            <h1 class="float-left display-3 mr-4">500</h1>
+            <h4 class="pt-3">Houston, we have a problem!</h4>
+            <p class="text-muted">The page you are looking for is temporarily unavailable.</p>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
+  </div>
+</template>
+
+<script>
+import BRow from 'bootstrap-vue/es/components/layout/row'
+import BCol from 'bootstrap-vue/es/components/layout/col'
+
+export default {
+  components: {
+    BRow,
+    BCol
+  }
+}
+</script>

@@ -1,0 +1,71 @@
+version: '2'
+
+volumes:
+  db:
+    driver: local
+  rabbitmqdata:
+    driver: local
+
+services:
+  db:
+    container_name: tm_db
+    build:
+      dockerfile: ./Dockerfile
+      context: ../../database
+    ports:
+      - "9432:5432"
+    environment:
+      POSTGRES_PASSWORD: "asdsadsad33efdsf"
+      POSTGRES_USER: "tm"
+    volumes:
+      - db:/var/lib/postgresql/data
+    logging:
+      options:
+        max-size: "50m"
+        max-file: "2"
+
+  rabbitmq:
+    build: ./rabbitmq
+    container_name: tm_rabbitmq
+    ports:
+      - "9971:5672"  # rabbit
+      - "9972:15672" # admin
+      - "9974:15674" # stomp
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: "tm"
+      RABBITMQ_DEFAULT_PASS: "dsf4GE34rddddKSdasljl"
+    logging:
+      options:
+        max-size: "50m"
+        max-file: "2"
+
+  api:
+    build:
+      dockerfile: ./Dockerfile
+      context: ../../api
+    container_name: tm_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - rabbitmq
+    logging:
+      options:
+        max-size: "50m"
+        max-file: "2"
+
+  webcreator:
+    build:
+      dockerfile: ./Dockerfile
+      context: ../../webcreator
+    container_name: tm_webcreator
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    logging:
+      options:
+        max-size: "50m"
+        max-file: "2"
